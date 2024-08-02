@@ -19,4 +19,4 @@ let test_hello =
     let (_operations, new_storage) = Hello.store_hello 0 initial_storage in
     Assert.assert (new_storage = "Hello, web3")
 
-// run test with `ligo run test src/main.mligo
+(* run test with `ligo run test src/hello.mligo *)
