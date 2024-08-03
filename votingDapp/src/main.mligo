@@ -46,3 +46,28 @@ module Voting = struct
     ([], { store with dummy = ""}) 
 
 end
+
+(* test *)
+let test_dapp () = 
+
+  //define some test players and voters
+  let players = Map.empty
+    |> Map.add 1 { name = "Lionel Messi"; year = "2023"; votes = 0n}
+    |> Map.add 2 { name = "Sadio Mane"; year = "2023"; votes = 0n} in
+
+  let voters = Set.empty
+    |> Set.add ("tz1zenoaddress" : address)
+    |> Set.add ("tz1senecaaddress" : address) in
+
+  // initialize storage
+  let store = Voting.initial_storage players voters in
+  
+  //simulate a vote from a new voter
+  let (_ops, updated_store) = Voting.increase_votes 2 store in 
+  match Map.find_opt 2 updated_store.players with
+  | Some player ->
+    if player.votes = 1n then
+      "Test Passed: Player 2 vote count is 1.\n"
+    else
+      "Test Failed: Player 2 vote count is not 1. Found: %s\n" 
+  | None -> "Test Failed: Player 2 not found in the players map.\n"
