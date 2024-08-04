@@ -48,26 +48,60 @@ module Voting = struct
 end
 
 (* test *)
-let test_dapp () = 
+// let test_dapp () = 
 
-  //define some test players and voters
-  let players = Map.empty
-    |> Map.add 1 { name = "Lionel Messi"; year = "2023"; votes = 0n}
-    |> Map.add 2 { name = "Sadio Mane"; year = "2023"; votes = 0n} in
+//   //define some test players and voters
+//   let players = Map.empty
+//     |> Map.add 1 { name = "Lionel Messi"; year = "2023"; votes = 0n}
+//     |> Map.add 2 { name = "Sadio Mane"; year = "2023"; votes = 0n} in
 
-  let voters = Set.empty
-    |> Set.add ("tz1zenoaddress" : address)
-    |> Set.add ("tz1senecaaddress" : address) in
+//   let voters = Set.empty
+//     |> Set.add ("tz1zenoaddress" : address)
+//     |> Set.add ("tz1senecaaddress" : address) in
 
-  // initialize storage
-  let store = Voting.initial_storage players voters in
+//   // initialize storage
+//   let store = Voting.initial_storage players voters in
   
-  //simulate a vote from a new voter
-  let (_ops, updated_store) = Voting.increase_votes 2 store in 
-  match Map.find_opt 2 updated_store.players with
-  | Some player ->
-    if player.votes = 1n then
-      "Test Passed: Player 2 vote count is 1.\n"
-    else
-      "Test Failed: Player 2 vote count is not 1. Found: %s\n" 
-  | None -> "Test Failed: Player 2 not found in the players map.\n"
+//   //simulate a vote from a new voter
+//   let (_ops, updated_store) = Voting.increase_votes 2 store in 
+//   let result: test_exec_result =  Map.find_opt 2 updated_store.players in
+//   match result with
+//     Fail _err -> Test.Next.IO.print ""
+//   | Some player ->
+//     if player.votes = 1n then
+//       "Test Passed: Player 2 vote count is 1.\n"
+//     else
+//       "Test Failed: Player 2 vote count is not 1. Found: %s\n" 
+//   | None -> "Test Failed: Player 2 not found in the players map.\n"
+
+let create_player (name: string) (year: string) (votes: nat) : Voting.player_record = {
+  name = name;
+  year = year;
+  votes = votes;
+}
+
+(* Test initial storage setup *)
+  let test_dapp () =
+    (* define some test players and voters *)
+    let players = Map.empty
+      |> Map.add 1 { name = "Lionel Messi"; year = "2023"; votes = 0n }
+      |> Map.add 2 { name = "Sadio Mane"; year = "2023"; votes = 0n } in
+
+    let voters = Set.empty
+      |> Set.add ("tz1zenoaddress" : address)
+      |> Set.add ("tz1senecaaddress" : address) in
+
+    (* initialize storage *)
+    let store = Voting.initial_storage players voters in
+
+    (* Simulate a vote from a new voter (valid) *)
+    let (_ops, updated_store) = Voting.increase_votes 2 store in
+    let result = Map.find_opt 2 updated_store.players in
+    let test_result =
+      match result with
+      | Some player ->
+        if player.votes = 1n then Test.Next.IO.print "Test Passed: Player 2 vote count is 1.\n"
+        else Test.Next.IO.print "Test Failed: Player 2 vote count is not 1. Found: %s\n" 
+      | None -> Test.Next.IO.print "Test Failed: Player 2 not found in the players map.\n"
+    in
+    test_result
