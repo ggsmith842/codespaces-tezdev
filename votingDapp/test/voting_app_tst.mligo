@@ -1,6 +1,7 @@
 #import "../src/main.mligo" "Voting"
 
 include Test.Next
+include Test.Next.IO
 
 
 (* Test initial storage setup *)
@@ -53,11 +54,12 @@ let test_voting =
 
   (* Test increase votes *)
   let () = State.set_source voter_account1 in
-  let _ = Voting.Voting.increase_votes 1 in 
+  // let  = Voting.Voting.increase_votes 1 in 
+  let _result = Test.Next.Contract.transfer_exn (Typed_address.get_entrypoint "increase_votes" orig.taddr) 1 0tez in
 
-  
   let updated_store = Typed_address.get_storage(orig.taddr) in
   let player1 = Map.find 1 updated_store.players in
-  Compare.eq (player1.votes) 1
+  (Compare.eq (player1.votes) 1)
+  
 
 
