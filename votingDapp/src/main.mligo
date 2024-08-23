@@ -22,6 +22,9 @@ module Voting = struct
      dummy = ""
     }
 
+    
+
+    [@entry]
     let increase_votes(params: int) (store: storage) : operation list * storage = 
       let sender = Tezos.get_sender () in
 
@@ -41,9 +44,9 @@ module Voting = struct
       ([], { store with players = updated_players; votersWalletAddresses = updated_voters})
 
   (* dummy entry point *)
-  [@entry]
-  let dummy (_unit : unit) (store: storage) : operation list * storage =
-    ([], { store with dummy = ""}) 
+  // [@entry]
+  // let dummy (_unit : unit) (store: storage) : operation list * storage =
+  //   ([], { store with dummy = ""}) 
 
 end
 
@@ -62,4 +65,3 @@ end
   // in
   // test_result 
 
-// let () = test_dapp
