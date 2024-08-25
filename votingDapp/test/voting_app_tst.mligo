@@ -84,7 +84,4 @@ let test_voting =
 
   (* Assert results *)
   Assert.assert(voting_result && test_double_vote ) 
-  | 
-  | 
-  
 
