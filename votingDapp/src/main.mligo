@@ -49,19 +49,3 @@ module Voting = struct
     ([], { store with dummy = ""}) 
 
 end
-
- 
-
-  (* Simulate a vote from a new voter (valid) *)
-  // let (_ops, updated_store) = Voting.increase_votes 2 store in
-  
-  // let result = Map.find_opt 2 updated_store.players in
-  // let test_result =
-  //   match result with
-  //   | Some player ->
-  //     if player.votes = 1n then Test.Next.IO.print "Test Passed: Player 2 vote count is 1.\n"
-  //     else Test.Next.IO.print "Test Failed: Player 2 vote count is not 1. Found: %s\n" 
-  //   | None -> Test.Next.IO.print "Test Failed: Player 2 not found in the players map.\n"
-  // in
-  // test_result 
-
