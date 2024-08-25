@@ -26,13 +26,6 @@ let test_origination =
   | true -> "Pass"
   | false -> "Fail"
   
-  
-
-  // let test_accounts =
-  //   let initial_balances : tez list = [] in
-  //   let () = Test.Next.State.reset 3n initial_balances in
-  //   let voter_account1 = Test.Next.Account.address(0n) in
-  //   Test.Next.IO.log (Test.Next.Address.get_balance voter_account1) 
 
 let test_voting =
 
@@ -53,7 +46,7 @@ let test_voting =
   (* Set up test accounts *)
   // let () = State.reset 3n [] in
   let voter_account1 = Account.address(0n) in
-  // let voter_account2 = Account.address(1n) in
+  let voter_account2 = Account.address(1n) in
 
   (* Test increase votes *)
   let () = State.set_source voter_account1 in
@@ -67,8 +60,6 @@ let test_voting =
     | Some p -> (p.votes = 1n)
     | None -> false
   in
-
-  //test if voter can vote again
   
   (* Test if voter can vote again (should fail) *)
   let test_double_vote = 
@@ -78,10 +69,20 @@ let test_voting =
     | Success _s  -> false (* The test passed because the second vote failed *)
   in
 
+  (* Test for failure if player does not exist *)
+  let test_player_not_found =
+    let () = State.set_source voter_account2 in
+    let is_found = Contract.transfer (Typed_address.get_entrypoint "increase_votes" orig.taddr) 99 0tez in
+      match is_found with
+      | Fail _x -> true //player not found and voting fails
+      | Success _s -> false //test failed; should not have succeeded since player does not exist
+  in
+
   (* Log results *)
   let () = log("First vote counted correctly: ", voting_result) in
   let () = log("Double voting prevented: ", test_double_vote) in
-
+  let () = log("Player does not exist failure:", test_player_not_found)
+ in
   (* Assert results *)
   Assert.assert(voting_result && test_double_vote ) 
 

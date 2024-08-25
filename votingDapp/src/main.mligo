@@ -23,7 +23,6 @@ module Voting = struct
     }
 
     
-
     [@entry]
     let increase_votes(params: int) (store: storage) : operation list * storage = 
       let sender = Tezos.get_sender () in
